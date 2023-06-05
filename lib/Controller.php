@@ -11,12 +11,15 @@ class Controller
     private $kirby = null;
     private $providers = null;
     private $session = null;
+    private $prePath = null;
+    
 
     public function __construct()
     {
         $this->kirby = kirby();
         $this->session = $this->kirby->session();
         $this->providers = new ProvidersManager($this->kirby);
+        $this->prePath = $this->kirby->option('thathoff.oauth.prePath', '');
     }
 
     private function providers()
@@ -27,7 +30,7 @@ class Controller
                     return [
                         'id'   => $provider->getId(),
                         'name' => $provider->getName(),
-                        'href' => new Uri('oauth/login') . '/' . $provider->getId(),
+                        'href' => $this->prePath . new Uri('oauth/login') . '/' . $provider->getId(),
                     ];
                 }
             )
